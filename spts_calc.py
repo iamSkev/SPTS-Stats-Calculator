@@ -70,7 +70,7 @@ def _time_checker(time, msg) -> 0:
     return f"{time} {msg+'s' if time > 1 else msg} " if time != 0 else ""
 
 while True:
-    print("You can add suffixes to your stats e.g 69m will be the same as 69000000")
+    print("You can add suffixes to your stats e.g., 69m will be the same as 69000000")
     goal = _converter((input("How much is your goal?: ")))
     if goal is None:
         goal = _net("How much is your goal?: ")
@@ -90,7 +90,6 @@ while True:
         hours=optimal_time)
     days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
     seconds = time.seconds - ((hours*3600)+(minutes*60))
-    print(seconds)
     milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
     print(
         f"It would take roughly around {_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
