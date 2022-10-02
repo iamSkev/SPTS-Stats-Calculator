@@ -2,7 +2,7 @@ import datetime
 import re
 from datetime import timedelta
 
-STATS = {"fs": 1, "bt": 1.25, "psy": 1.5}
+STATS = {"fs": 1, "bt": 1.25, "psy": 1.5, 'idk': "idk"}
 
 def _converter(stat) -> int | None:    
     suffix_converter = {
@@ -71,9 +71,13 @@ def _net(message=None, suffix=True, wrong_type=False) -> int | None:
 def _time_checker(time, msg) -> 0:
     return f"{time} {msg+'s' if time > 1 else msg} " if time != 0 else ""
 
-def _unknown():
-    
-    ...
+def _get_time(goal, current, per_tick, tick_time) -> str:
+    optimal_time = ((((goal - current) / per_tick) * (STATS.get(tick_time))) / 60) / 60
+    time = datetime.timedelta(hours=optimal_time)
+    days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
+    seconds = time.seconds - ((hours*3600)+(minutes*60))
+    milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
+    return f"{_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
 
 while True:
     print("You can add suffixes to your stats e.g., 69m will be the same as 69000000")
@@ -91,16 +95,15 @@ while True:
     tick_time = str(input("What stat are you training? (fs, bt, psy, idk): ")).lower()
     if tick_time not in ('fs', 'bt', 'psy', "idk"):
         tick_time = _net(suffix=False)
-    elif tick_time == 'idk':
+    
+    if tick_time == "idk":
         total_time = []
         
         for k, v in STATS.items():
-            optimal_time = ((((goal - current) / per_tick) * (STATS.get(k))) / 60) / 60
-            time = datetime.timedelta(hours=optimal_time)
-            days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
-            seconds = time.seconds - ((hours*3600)+(minutes*60))
-            milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
-            total_time.append(f"{_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}")
+            if k == "idk":
+                continue
+            time_result = _get_time(goal, current, per_tick, k)
+            total_time.append(time_result)
         
         print(
         f"""
@@ -115,14 +118,11 @@ Psychic Power: {total_time[2]}""")
 Good Luck. And as always. Quack.
         """
         )
+    
     else:
-        optimal_time = ((((goal - current) / per_tick) * (STATS.get(tick_time))) / 60) / 60
-        time = datetime.timedelta(
-            hours=optimal_time)
-        days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
-        seconds = time.seconds - ((hours*3600)+(minutes*60))
-        milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
+    
+        time_result = _get_time(goal, current, per_tick, tick_time)
         print(
-            f"It would take roughly around {_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
+            f"It would take roughly around {time_result}"
         )
         print("Good Luck. And as always. Quack.")
