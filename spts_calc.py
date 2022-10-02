@@ -104,15 +104,15 @@ while True:
         
         print(
         f"""
-        Since you picked idk (i don't know) when i asked you about what you're training, i calculated the time for all 3 of the stats.
+Since you picked idk (i don't know) when i asked you about what you're training, i calculated the time for all 3 of the stats.
 
-        Here they are:
+Here they are:
 
-        Fist Strength: {total_time[0]}
-        Body Toughness: {total_time[1]}
-        Psychic Power: {total_time[2]}""")
+Fist Strength: {total_time[0]}
+Body Toughness: {total_time[1]}
+Psychic Power: {total_time[2]}""")
         print("""
-        Good Luck. And as always. Quack.
+Good Luck. And as always. Quack.
         """
         )
     else:
