@@ -75,7 +75,7 @@ def _get_time(goal, current, per_tick, tick_time) -> str:
 
     time = timedelta(hours=optimal_time)
     
-    hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
+    hours, minutes = time.seconds // 3600, (time.seconds % 3600) // 60
     
     seconds = time.seconds - ((hours*3600)+(minutes*60))
     
