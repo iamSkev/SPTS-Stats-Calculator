@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 import re
 from datetime import timedelta
 
@@ -29,7 +28,7 @@ def _converter(stat) -> int | None:
     return float(stat)
 
 
-def _net(message=None, suffix=True, wrong_type=False) -> int | None:
+def _net(message=None, suffix=True) -> int | None:
     while True:
         if suffix is True:
             print(
@@ -52,7 +51,6 @@ def _net(message=None, suffix=True, wrong_type=False) -> int | None:
             stat = _converter((input(message)))
             if stat is not None:
                 return stat
-                break
 
 
         else:
@@ -68,7 +66,6 @@ def _net(message=None, suffix=True, wrong_type=False) -> int | None:
             stat = str(input("What stat are you training? (fs, bt, psy, idk): ")).lower()
             if STATS.get(stat) is not None:
                 return stat
-                break
 
 def _time_checker(time, msg) -> 0:
     return f"{time} {msg+'s' if time > 1 else msg} " if time != 0 else ""
@@ -76,9 +73,9 @@ def _time_checker(time, msg) -> 0:
 def _get_time(goal, current, per_tick, tick_time) -> str:
     optimal_time = ((((goal - current) / per_tick) * (STATS.get(tick_time))) / 60) / 60
 
-    time = datetime.timedelta(hours=optimal_time)
+    time = timedelta(hours=optimal_time)
     
-    days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
+    hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
     
     seconds = time.seconds - ((hours*3600)+(minutes*60))
     
