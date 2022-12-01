@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime
 import re
 from datetime import timedelta
@@ -73,10 +75,15 @@ def _time_checker(time, msg) -> 0:
 
 def _get_time(goal, current, per_tick, tick_time) -> str:
     optimal_time = ((((goal - current) / per_tick) * (STATS.get(tick_time))) / 60) / 60
+
     time = datetime.timedelta(hours=optimal_time)
+    
     days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
+    
     seconds = time.seconds - ((hours*3600)+(minutes*60))
+    
     milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
+    
     return f"{_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
 
 while True:
