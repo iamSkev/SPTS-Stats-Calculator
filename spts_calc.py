@@ -72,20 +72,16 @@ def _time_checker(time, msg) -> 0:
 
 def _get_time(goal, current, per_tick, tick_time) -> str:
     optimal_time = ((((goal - current) / per_tick) * (STATS.get(tick_time))) / 60) / 60
-    
+
     time = timedelta(hours=optimal_time)
     
-    days, hours, minutes = time.days, time.seconds // 3600, (time.seconds % 3600) // 60
+    hours, minutes = time.seconds // 3600, (time.seconds % 3600) // 60
     
     seconds = time.seconds - ((hours*3600)+(minutes*60))
     
-    years, months = days // 365, days // 30
+    milliseconds, microseconds = int((time.microseconds/10000)*10), int((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
     
-    days, months = days - (months*30), months - (years*12)
-    
-    milliseconds, microseconds = int((time.microseconds/10000)*10), ((((time.microseconds/10000)*10)-(int((time.microseconds/10000)*10)))*1000)
-    
-    return f"{_time_checker(years, 'year')}{'and ' if months == 0 and years != 0 else ''}{_time_checker(months, 'month')}{'and ' if days == 0 and months != 0 else ''}{_time_checker(days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
+    return f"{_time_checker(time.days, 'day')}{'and ' if minutes == 0 and hours != 0 else ''}{_time_checker(hours, 'hour')}{'and ' if seconds == 0 and minutes != 0 else ''}{_time_checker(minutes, 'minute')}{'and ' if milliseconds == 0 and seconds != 0 else ''}{_time_checker(seconds, 'second')}{'and ' if microseconds == 0 and milliseconds != 0 else ''}{_time_checker(milliseconds, 'millisecond')}{'and' if microseconds != 0 else ''} {_time_checker(microseconds, 'microsecond')}"
 
 while True:
     print("You can add suffixes to your stats e.g., 69m will be the same as 69000000")
